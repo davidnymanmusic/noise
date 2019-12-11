@@ -1,5 +1,126 @@
-.App {
+@import url('https://fonts.googleapis.com/css?family=Codystar|Sirin+Stencil&display=swap');
+
+body {
   text-align: center;
+  height: 100vh;
+  background: #a8cacb;
+  font-family: 'Sirin Stencil', cursive;
+}
+
+.white {
+  background: #fff;
+  border: 2px solid white;
+}
+.pink {
+  background: #fed8d8bf;
+  border: 2px solid white;
+}
+.brown {
+  background: #bf7d63;
+  border: 2px solid white;
+}
+
+button {
+  border: none;
+  margin: 0px 3px;
+  font-family: 'Codystar', cursive;
+  font-size: 3em;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.unselected {
+  background: #a8cacb;
+}
+
+#volume {
+  -webkit-appearance: none;
+  margin: auto;
+  width: 50%;
+  color: rgb(245, 250, 255);
+  height: 20px;
+  background: rgba(254, 216, 216, 0.75);
+  opacity: 1;
+  transition: 0.4s;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+    rgba(254, 216, 216, 1),
+    rgba(254, 216, 216, 0.92)
+  );
+}
+#volume-static {
+  -webkit-appearance: none;
+  margin: auto;
+  width: 50%;
+  color: rgb(245, 250, 255);
+  height: 20px;
+  background: rgba(254, 216, 216, 0.75);
+  opacity: 1;
+  transition: 0.4s;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.3);
+  background: linear-gradient(rgba(254, 216, 216, 1), rgba(254, 216, 216, 0.92)),
+    url(https://art.pixilart.com/0928a2aa14e88da.gif);
+}
+
+#volume:focus {
+  outline: double;
+  outline-color: white;
+  outline-offset: 10px;
+}
+
+#volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  cursor: crosshair;
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.3);
+}
+#volume-static:focus {
+  outline: double;
+  outline-color: white;
+  outline-offset: 10px;
+}
+
+#volume-static::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  cursor: crosshair;
+  box-shadow: 0 0.1em 0.3em rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.65),
+      rgba(255, 255, 255, 0.98)
+    ),
+    url(https://art.pixilart.com/0928a2aa14e88da.gif);
+  font-family: 'Sirin Stencil', cursive;
+  font-size: 158px;
+  text-align: center;
+  background-repeat: repeat-x;
+  background-position: 0 0;
+  color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  transition: 0.3s;
+  opacity: 0.92;
+  text-shadow: 2px 4px 18px rgba(255, 255, 255, 0.33);
 }
 
 .App-logo {

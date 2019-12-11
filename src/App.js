@@ -1,24 +1,156 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect, useRef } from 'react';
+import Tone from 'tone';
 import './App.css';
+import { useToggle } from './useToggle';
 
 function App() {
+  const [volume, setVolume] = useState(-20);
+  const [focus, setFocus] = useState('');
+
+  const [type, setType] = useState({ color: 'white', active: true });
+  const [noise, setNoise] = useState(
+    new Tone.Noise({
+      type,
+      volume: -20,
+    }),
+  );
+
+  const ref = useRef(null);
+
+  const [toggle, setToggle] = useToggle(true);
+
+  function setNoiseType(type) {
+    setType({ color: type.color, active: true });
+    noise.type = type.color;
+    noise.start().toMaster();
+  }
+
+  function onChange(e) {
+    setVolume(e.target.value);
+    noise.volume.value = e.target.value;
+  }
+
+  var dist = new Tone.Filter({
+    type: 'lowpass',
+    frequency: 400,
+    rolloff: -12,
+    Q: 4,
+    gain: 1,
+  }).toMaster();
+
+  //play a middle 'C' for the duration of an 8th note
+
+  function handleKeyDown(event) {
+    // console.log(event.keyCode);
+    // if (event.keyCode === 65) {
+    //   noise.start();
+    // } else if (event.keyCode === 83) {
+    //   noise.connect(dist);
+    // } else if (event.keyCode === 76) {
+    // } else if (event.keyCode === 49) {
+    // } else if (event.keyCode === 50) {
+    // } else if (event.keyCode === 48) {
+    //   noise.volume.value = vol += 1;
+    // } else if (event.keyCode === 57) {
+    //   noise.volume.value = vol -= 1;
+    // } else if (event.keyCode === 32) {
+    //   noise.stop();
+    // }
+  }
+
+  function onKeyDown(event) {
+    if (event.keyCode === 48) {
+      setVolume(
+        Math.floor(
+          noise.volume.value <= 0
+            ? (noise.volume.value += 1)
+            : noise.volume.value,
+        ),
+      );
+    }
+    if (event.keyCode === 57) {
+      setVolume(
+        Math.floor(
+          noise.volume.value >= -99
+            ? (noise.volume.value -= 1)
+            : noise.volume.value,
+        ),
+      );
+    }
+    if (event.keyCode === 32 && noise.state === 'started') {
+      setMute();
+      setToggle();
+    } else {
+      setNoiseType(type);
+      setToggle();
+    }
+  }
+
+  useEffect(() => {}, [volume, noise, toggle]);
+
+  function changeFilter() {
+    noise.connect(dist);
+  }
+
+  function setMute() {
+    noise.mute = toggle;
+  }
+
+  function press(e) {
+    if (e.keyCode === 56) ref.current.focus();
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div style={{ transition: '1s' }} tabIndex="0" onKeyDown={e => press(e)}>
+      <h1>White Noise</h1>
+      <p>{Number(Math.floor(volume)) + 100}%</p>
+      {focus ? 'use 9-0' : 'no'}
+      <div class="slidecontainer">
+        <input
+          ref={ref}
+          id={noise.mute ? 'volume' : 'volume-static'}
+          type="range"
+          min="-100"
+          defaultValue="-20"
+          step="1"
+          max="0"
+          onChange={e => onChange(e)}
+          onKeyDown={e => onKeyDown(e)}
+          value={volume}
+          onFocus={() => setFocus(true)}
+          onBlur={() => setFocus(false)}
+        />
+      </div>
+      {[
+        { color: 'white', active: false },
+        { color: 'pink', active: false },
+        { color: 'brown', active: false },
+      ].map((color, i) => (
+        <button
+          key={i}
+          className={` button ${
+            color.color === type.color ? type.color : 'unselected'
+          }`}
+          onClick={() => {
+            setNoiseType(color);
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          {color.color}
+        </button>
+      ))}
+      <br></br>
+
+      {noise.state !== 'stopped' ? (
+        <button
+          className={` button ${type.color}`}
+          onClick={() => {
+            setToggle();
+            setMute();
+          }}
+        >
+          {!noise.mute && noise.state ? 'Stop' : 'Start'}
+        </button>
+      ) : null}
     </div>
   );
 }
