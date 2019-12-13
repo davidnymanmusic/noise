@@ -16,6 +16,9 @@ function App() {
   );
 
   const ref = useRef(null);
+  const white = useRef(null);
+  const pink = useRef(null);
+  const brown = useRef(null);
 
   const [toggle, setToggle] = useToggle(true);
 
@@ -26,6 +29,7 @@ function App() {
   }
 
   function onChange(e) {
+    ref.current.focus();
     setVolume(e.target.value);
     noise.volume.value = e.target.value;
   }
@@ -77,7 +81,7 @@ function App() {
         ),
       );
     }
-    if (event.keyCode === 32 && noise.state === 'started') {
+    if (event.keyCode === 13 && noise.state === 'started') {
       setMute();
       setToggle();
     } else {
@@ -97,7 +101,20 @@ function App() {
   }
 
   function press(e) {
-    if (e.keyCode === 56) ref.current.focus();
+    console.log(type);
+    console.log(e.keyCode);
+    if (e.keyCode === 56) {
+      ref.current.focus();
+    } else if (e.keyCode === 49) {
+      white.current.focus();
+      setNoiseType({ color: 'white', active: true });
+    } else if (e.keyCode === 50) {
+      pink.current.focus();
+      setNoiseType({ color: 'pink', active: true });
+    } else if (e.keyCode === 51) {
+      brown.current.focus();
+      setNoiseType({ color: 'brown', active: true });
+    }
   }
 
   return (
@@ -128,10 +145,12 @@ function App() {
       ].map((color, i) => (
         <button
           key={i}
+          ref={eval(color.color)}
           className={` button ${
             color.color === type.color ? type.color : 'unselected'
           }`}
           onClick={() => {
+            ref.current.focus();
             setNoiseType(color);
           }}
         >
